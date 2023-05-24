@@ -79,7 +79,7 @@ func validateCmd() *cobra.Command {
 
 	cmd.PersistentFlags().StringVarP(&ignoredJobs, "ignored", "i", "", "set ignored jobs (comma-separated list)")
 
-	cmd.PersistentFlags().IntVar(&githubClientRetry, "client-retry", 0, "set retry count for github client")
+	cmd.PersistentFlags().IntVar(&githubClientRetry, "github-client-retry", 0, "set retry count for GitHub client")
 
 	return cmd
 }
