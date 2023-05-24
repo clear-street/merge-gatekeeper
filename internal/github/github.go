@@ -26,22 +26,38 @@ type Client interface {
 	ListCheckRunsForRef(ctx context.Context, owner, repo, ref string, opts *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error)
 }
 
+type clientConfigOption func(*clientConfig)
+
 type client struct {
 	ghc *github.Client
 }
 
-func NewClient(ctx context.Context, token string) Client {
-	oauthClient := oauth2.NewClient(ctx, oauth2.StaticTokenSource(
-		&oauth2.Token{
-			AccessToken: token,
-		},
-	))
+type clientConfig struct {
+	transport http.RoundTripper
+}
+
+func WithTransport(transport http.RoundTripper) clientConfigOption {
+	return func(c *clientConfig) {
+		c.transport = transport
+	}
+}
+
+func NewClient(ctx context.Context, token string, opts ...clientConfigOption) Client {
+	clientConfig := &clientConfig{}
+
+	for _, opt := range opts {
+		opt(clientConfig)
+	}
 
 	return &client{
 		ghc: github.NewClient(&http.Client{
-			Transport: &RetryTransport{
-				Transport: oauthClient.Transport,
-				Retries:   3,
+			Transport: &oauth2.Transport{
+				Base: clientConfig.transport,
+				Source: oauth2.ReuseTokenSource(nil, oauth2.StaticTokenSource(
+					&oauth2.Token{
+						AccessToken: token,
+					},
+				)),
 			},
 		}),
 	}

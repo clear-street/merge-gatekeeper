@@ -1,15 +1,23 @@
 package github
 
 import (
-	"fmt"
+	"log"
 	"math"
 	"net/http"
 	"time"
 )
 
 type RetryTransport struct {
-	Transport http.RoundTripper
-	Retries   int
+	next    http.RoundTripper
+	Retries int
+	log     log.Logger
+}
+
+func NewRetryTransport(retry int) *RetryTransport {
+	return &RetryTransport{
+		next:    http.DefaultTransport,
+		Retries: retry,
+	}
 }
 
 func (t *RetryTransport) RoundTrip(req *http.Request) (*http.Response, error) {
@@ -19,14 +27,13 @@ func (t *RetryTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	)
 
 	for i := 0; i <= t.Retries; i++ {
-		resp, err = t.Transport.RoundTrip(req)
+		resp, err = t.next.RoundTrip(req)
 		if err != nil {
-			fmt.Println("Error:", err)
-			continue
+			return resp, err
 		}
 
 		if resp.StatusCode >= 500 && resp.StatusCode < 600 {
-			fmt.Printf("Retrying request due to status code: %d\n", resp.StatusCode)
+			log.Printf("Retrying request due to status code: %d\n", resp.StatusCode)
 			delay := time.Duration(math.Pow(2, float64(i))) * time.Second
 			time.Sleep(delay)
 
