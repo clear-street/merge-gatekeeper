@@ -16,7 +16,7 @@ At UPSIDER, we have a few internal repositories set up with a monorepo structure
 
 We are looking to add a few more features, such as extra signoff from non-coder, label based check, etc.
 
-<sup><sub>NOTE:  
+<sup><sub>NOTE:
 <sup>(\*1)</sup> There are some other hacks, such as using an empty job with the same name to override the status, but those solutions do not provide the flexible control we are after.</sub></sup>
 
 <!-- == imptr: background / end == -->
@@ -88,7 +88,7 @@ There are some customisation available for Merge Gatekeeper.
 | `timeout`             | Timeout setup to give up further check. Default is set to 600 (sec).                                                                                                                                                                                                                                 |          |
 | `ignored`             | Jobs to ignore regardless of their statuses. Defined as a comma-separated list.                                                                                                                                                                                                                      |          |
 | `ref`                 | Git ref to check out. This falls back to the HEAD for given PR, but can be set to any ref.                                                                                                                                                                                                           |          |
-| `github-client-retry` | Retry the request if the GitHub client returns 5xx error. Default is set to 0.
+| `github-client-retry` | Retry the request if the GitHub client returns 5xx error. Default is set to 0.                                                                                                                                                                                                                       |          |
 
 <!-- == imptr: inputs / end == -->
 
