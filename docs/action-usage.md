@@ -12,7 +12,7 @@
 | `timeout`             | Timeout setup to give up further check. Default is set to 600 (sec).                                                                                                                                                                                                                                 |          |
 | `ignored`             | Jobs to ignore regardless of their statuses. Defined as a comma-separated list.                                                                                                                                                                                                                      |          |
 | `ref`                 | Git ref to check out. This falls back to the HEAD for given PR, but can be set to any ref.                                                                                                                                                                                                           |          |
-| `github-client-retry` | Retry the request if the GitHub client returns 5xx error. Default is set to 0.
+| `github-client-retry` | Retry the request if the GitHub client returns 5xx error. Default is set to 0.                                                                                                                                                                                                                       |          |
 
 <!-- == export: inputs / end == -->
 
