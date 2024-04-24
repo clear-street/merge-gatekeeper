@@ -22,9 +22,10 @@ const (
 	checkRunCompletedStatus = "completed"
 )
 const (
-	checkRunNeutralConclusion = "neutral"
-	checkRunSuccessConclusion = "success"
-	checkRunSkipConclusion    = "skipped"
+	checkRunCancelledConclusion = "cancelled"
+	checkRunNeutralConclusion   = "neutral"
+	checkRunSuccessConclusion   = "success"
+	checkRunSkipConclusion      = "skipped"
 )
 
 const (
@@ -238,7 +239,7 @@ func (sv *statusValidator) listGhaStatuses(ctx context.Context) ([]*ghaStatus, e
 		switch *run.Conclusion {
 		case checkRunNeutralConclusion, checkRunSuccessConclusion:
 			ghaStatus.State = successState
-		case checkRunSkipConclusion:
+		case checkRunCancelledConclusion, checkRunSkipConclusion:
 			continue
 		default:
 			ghaStatus.State = errorState
